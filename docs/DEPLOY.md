@@ -5,15 +5,16 @@
 | Review console and both portals | Vercel (Hobby), project root `frontend/` | Next.js, no build settings needed |
 | Engine API | Vercel (Hobby), project root `backend/` | FastAPI; `backend/vercel.json`; no browser here |
 | Web-form submissions | GitHub Actions, `.github/workflows/worker.yml` | triggered on approval, plus a 15-minute sweep |
-| Database | Neon (free) | one database for the engine, one for the portals; an existing project is fine |
+| Database | Neon (free) | one database (`enroll`) for the engine and the portals; their tables don't overlap |
 | Shared state | Upstash Redis (free) | `rediss://` URL; keys are prefixed `enroll:` so an existing database can be shared |
 | AI mapper | Groq (free) | or Claude |
 | n8n | your machine (`docker compose up -d`) | n8n Cloud is paid; the workflows need only the engine's URL and token |
 
 ## 1. Databases
 
-- **Neon:** in your project, add two databases, `enroll` and `portals` (Databases > New database). Copy each
-  connection string; they end in `?sslmode=require`.
+- **Neon:** create a project (region near London), database `enroll`. In **Connect**, turn connection pooling
+  off and copy the direct string (no `-pooler` in the host; migrations hold a session lock). It ends in
+  `?sslmode=require`. The engine and the portals use the same string.
 - **Upstash:** use your Redis database's `rediss://` URL.
 
 ## 2. Secrets (on your machine, never in chat or git)
@@ -27,14 +28,15 @@ python -c "import secrets; print(secrets.token_urlsafe(24))"   # PORTAL_API_KEY,
 ## 3. GitHub
 
 Push the repository. Create a fine-grained token (Settings > Developer settings > Fine-grained tokens) for this
-repository only, with **Actions: Read and write** and **Contents: Read**. It lets the engine start the worker.
+repository only, with **Contents: Read and write** (GitHub requires it for repository dispatch). It lets the engine start
+the worker.
 
 ## 4. Vercel: the web app (`frontend/`)
 
 New project from the repository, Root Directory `frontend`. Environment variables:
 
 ```
-PORTAL_DATABASE_URL = <Neon portals connection string>
+PORTAL_DATABASE_URL = <Neon enroll connection string>
 PORTAL_API_KEY      = <PORTAL_API_KEY>
 ENGINE_URL          = https://<engine project>.vercel.app      (fill in after step 5, then redeploy)
 ```

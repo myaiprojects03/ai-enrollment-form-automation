@@ -5,6 +5,11 @@ maps them onto an enrollment form with rules first and AI only for what is left,
 deterministic rules, and submits to the target portal by API or through its web form in a real browser. Anything
 uncertain stops in a review queue for a person. Every step is encrypted and audited.
 
+**Live:** [review console](https://ai-enrollment-portal.vercel.app/console) (sign-in on request) ·
+[Riverside Academy portal](https://ai-enrollment-portal.vercel.app/portals/riverside/enroll) (5-step web form) ·
+[Harbour Sports Club portal](https://ai-enrollment-portal.vercel.app/portals/harbour/join) (form plus API) ·
+[engine health](https://ai-enrollment-engine.vercel.app/health)
+
 ![Architecture](docs/architecture.png)
 
 ## What it does
