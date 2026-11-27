@@ -99,7 +99,8 @@ jobs:
           from app.security.crypto import new_key
           from app.security.staff import hash_password
           print(f"ENCRYPTION_KEYS={new_key()}\nFINGERPRINT_KEY={new_key()}\nOPERATOR_TOKEN=ci-operator")
-          print(f"SESSION_SECRET=ci-session\nSTAFF_ACCOUNTS=reviewer@example.com:{hash_password('ci-reviewer-pass')}")
+          # Quoted: the hash contains $ signs, which the shell would expand when the file is sourced.
+          print(f"SESSION_SECRET=ci-session\nSTAFF_ACCOUNTS='reviewer@example.com:{hash_password('ci-reviewer-pass')}'")
           PY
           set -a; . ../ci.env; set +a
           DATABASE_URL=postgresql://postgres:postgres@localhost:5432/enroll_console REDIS_URL= LLM_PROVIDER=none \
