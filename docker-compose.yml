@@ -1,0 +1,53 @@
+# Local services for development. Ports are offset (5433, 6380) so they don't clash with anything already installed.
+#   docker compose up -d
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: enroll
+      POSTGRES_PASSWORD: enroll
+      POSTGRES_DB: enroll
+    ports: ["5433:5432"]
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./infra/postgres-init.sql:/docker-entrypoint-initdb.d/10-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U enroll"]
+      interval: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports: ["6380:6379"]
+    volumes: [redisdata:/data]
+
+  n8n:
+    image: n8nio/n8n:latest
+    ports: ["5678:5678"]
+    environment:
+      DB_TYPE: postgresdb
+      DB_POSTGRESDB_HOST: postgres
+      DB_POSTGRESDB_DATABASE: n8n
+      DB_POSTGRESDB_USER: enroll
+      DB_POSTGRESDB_PASSWORD: enroll
+      GENERIC_TIMEZONE: Europe/London
+      N8N_DIAGNOSTICS_ENABLED: "false"
+      N8N_SECURE_COOKIE: "false"
+      ENGINE_URL: http://host.docker.internal:8000
+      ENGINE_TOKEN: ${OPERATOR_TOKEN:-}
+      WEBHOOK_SECRET: ${WEBHOOK_SECRET:-}
+      ALERT_WEBHOOK_URL: ${ALERT_WEBHOOK_URL:-}
+      CONSOLE_URL: http://localhost:3000
+      N8N_BLOCK_ENV_ACCESS_IN_NODE: "false"
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    volumes:
+      - n8ndata:/home/node/.n8n
+      - ./n8n:/workflows:ro
+    depends_on:
+      postgres: { condition: service_healthy }
+
+volumes:
+  pgdata:
+  redisdata:
+  n8ndata:

@@ -1,0 +1,19 @@
+{
+  "target_form": "riverside-enrollment",
+  "source": "webhook",
+  "idempotency_key": "crm-2026-000184",
+  "record": {
+    "first_name": "Amara",
+    "last_name": "Okafor",
+    "date_of_birth": "1998-05-14",
+    "email": "amara.okafor@example.com",
+    "phone": "07911 123456",
+    "program": "data-analytics",
+    "start_term": "2027-01",
+    "study_mode": "part_time",
+    "address_line1": "14 Mill Lane",
+    "city": "Leeds",
+    "postcode": "ls1 4ap",
+    "consent_terms": true
+  }
+}

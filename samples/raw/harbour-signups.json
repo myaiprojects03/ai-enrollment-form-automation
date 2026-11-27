@@ -1,0 +1,15 @@
+{"records": [
+  {"member": {"first": "Sofia", "last": "Marin"}, "contact": {"email": "sofia.marin@example.com", "phone": "07800 345678"},
+   "dob": "1991-09-30", "plan": "Family", "household size": "4", "start": "2026-12-14",
+   "activities": "Swimming, Climbing", "ice": {"name": "Dan Marin", "phone": "07900 456789"},
+   "heard about us": "Instagram", "terms": true},
+  {"member": {"first": "Jonah", "last": "Reid"}, "contact": {"email": "jonah.reid@example.com", "phone": "07801 456789"},
+   "dob": "2006-04-18", "plan": "Student", "uni card": "UOL482913", "start": "2026-12-07",
+   "activities": ["gym", "squash"], "ice": {"name": "Ruth Reid", "phone": "07901 567890"}, "terms": true},
+  {"member": {"first": "Ella", "last": "Brooks"}, "contact": {"email": "ella.brooks@example.com", "phone": "07802 567890"},
+   "dob": "1984-01-12", "plan": "Off peak", "start": "2026-12-01", "activities": "yoga",
+   "ice": {"name": "Mark Brooks", "phone": "07802 567890"}, "terms": true},
+  {"member": {"first": "Kai", "last": "Turner"}, "contact": {"email": "kai.turner@example.com", "phone": "07803 678901"},
+   "dob": "2012-07-07", "plan": "Adult", "start": "2026-12-01", "activities": "Tennis",
+   "ice": {"name": "Lisa Turner", "phone": "07903 789012"}, "terms": false}
+]}

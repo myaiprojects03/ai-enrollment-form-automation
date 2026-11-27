@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 860" font-family="IBM Plex Sans, Helvetica, Arial, sans-serif" font-size="15">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#15202b"/>
+    </marker>
+    <style>
+      .box { fill: #ffffff; stroke: #15202b; stroke-width: 1.5; }
+      .soft { fill: #f4f6f8; stroke: #c4ced8; stroke-width: 1.2; }
+      .engine { fill: #eef3ff; stroke: #1f4fd1; stroke-width: 2; }
+      .store { fill: #fff8ec; stroke: #a35200; stroke-width: 1.5; }
+      .person { fill: #e7f4ee; stroke: #18794e; stroke-width: 1.5; }
+      .t { fill: #15202b; } .h { font-weight: 600; font-size: 16px; } .s { fill: #5d6b7a; font-size: 13px; }
+      .big { font-weight: 600; font-size: 19px; fill: #1f4fd1; }
+      .line { stroke: #15202b; stroke-width: 1.6; fill: none; marker-end: url(#a); }
+      .dash { stroke: #5d6b7a; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; marker-end: url(#a); }
+      .lbl { fill: #5d6b7a; font-size: 12.5px; }
+    </style>
+  </defs>
+  <rect width="1400" height="860" fill="#ffffff"/>
+  <text x="40" y="44" font-size="24" font-weight="600" class="t">Enrollment form automation: how a record travels</text>
+  <text x="40" y="70" class="s" font-size="14">Rules first, the AI only for what is left; a person decides every exception; every step encrypted and audited.</text>
+
+  <!-- sources -->
+  <rect x="40" y="110" width="230" height="300" rx="8" class="soft"/>
+  <text x="58" y="138" class="t h">Where records come from</text>
+  <g class="t">
+    <text x="58" y="172">CSV exports</text><text x="58" y="200">JSON and nested JSON</text>
+    <text x="58" y="228">PDF forms and letters</text><text x="58" y="256">Call notes and emails</text>
+    <text x="58" y="284">Form tools and CRMs</text>
+  </g>
+  <text x="58" y="318" class="s">Console upload, or</text>
+  <rect x="58" y="332" width="194" height="58" rx="6" class="box"/>
+  <text x="72" y="356" class="t h">n8n</text><text x="72" y="376" class="s">signed webhook relay</text>
+
+  <!-- engine -->
+  <rect x="320" y="110" width="560" height="560" rx="10" class="engine"/>
+  <text x="342" y="142" class="big">Engine (FastAPI)</text>
+  <rect x="342" y="160" width="516" height="76" rx="6" class="box"/>
+  <text x="358" y="186" class="t h">1. Intake, exactly once</text>
+  <text x="358" y="208" class="s">Idempotency key (or a keyed hash of the record): Redis SET NX, then a unique</text>
+  <text x="358" y="226" class="s">key in Postgres. Record sealed with AES-256-GCM before it is written.</text>
+  <rect x="342" y="250" width="516" height="96" rx="6" class="box"/>
+  <text x="358" y="276" class="t h">2. Map to the form</text>
+  <text x="358" y="298" class="s">Rules: names, labels, aliases, derived fields, value converters with confidence.</text>
+  <text x="358" y="316" class="s">AI (Groq free tier, or Claude) only for what is left. It sees column names and</text>
+  <text x="358" y="334" class="s">value shapes, never values; free-text answers must be found in the text.</text>
+  <rect x="342" y="360" width="516" height="76" rx="6" class="box"/>
+  <text x="358" y="386" class="t h">3. Validate: PASS, NEEDS_REVIEW or BLOCKED</text>
+  <text x="358" y="408" class="s">Deterministic rules and an 85% confidence line. Exact reasons, no values in them.</text>
+  <text x="358" y="426" class="s">Possible duplicate applicants flagged by an HMAC fingerprint.</text>
+  <rect x="342" y="450" width="516" height="96" rx="6" class="box"/>
+  <text x="358" y="476" class="t h">4. Submit</text>
+  <text x="358" y="498" class="s">Portal API where there is one, otherwise its web form in Chromium (Playwright).</text>
+  <text x="358" y="516" class="s">Self-healing locators, values read back, screenshots, retries with backoff,</text>
+  <text x="358" y="534" class="s">portal checked before every send: never twice. Read-back compared field by field.</text>
+  <rect x="342" y="560" width="250" height="90" rx="6" class="store"/>
+  <text x="358" y="586" class="t h">Postgres</text>
+  <text x="358" y="606" class="s">records, field mappings and</text>
+  <text x="358" y="624" class="s">screenshots encrypted; runs;</text>
+  <text x="358" y="642" class="s">audit log; learned locators</text>
+  <rect x="608" y="560" width="250" height="90" rx="6" class="store"/>
+  <text x="624" y="586" class="t h">Redis</text>
+  <text x="624" y="606" class="s">idempotency gates,</text>
+  <text x="624" y="624" class="s">submission locks,</text>
+  <text x="624" y="642" class="s">sign-in rate limits</text>
+
+  <!-- person -->
+  <rect x="320" y="710" width="560" height="110" rx="10" class="person"/>
+  <text x="342" y="740" class="t h">Review console (Next.js): a person decides the exceptions</text>
+  <text x="342" y="764" class="s">Named sign-in, exception queue, side-by-side editor with the source and the portal</text>
+  <text x="342" y="782" class="s">screenshots, Approve &amp; submit or Reject, full history. The session stays in an</text>
+  <text x="342" y="800" class="s">httpOnly cookie; the page never holds a token.</text>
+
+  <!-- portals -->
+  <rect x="940" y="110" width="420" height="200" rx="8" class="soft"/>
+  <text x="958" y="138" class="t h">The portals</text>
+  <rect x="958" y="154" width="384" height="66" rx="6" class="box"/>
+  <text x="974" y="180" class="t h">Riverside Academy</text>
+  <text x="974" y="202" class="s">five-step web form, no API: browser path</text>
+  <rect x="958" y="230" width="384" height="66" rx="6" class="box"/>
+  <text x="974" y="256" class="t h">Harbour Sports Club</text>
+  <text x="974" y="278" class="s">web form and partner API: API path, sign-off needed</text>
+
+  <rect x="940" y="350" width="420" height="120" rx="8" class="box"/>
+  <text x="958" y="378" class="t h">Submission worker</text>
+  <text x="958" y="400" class="s">The same engine code with a browser. Runs where Chromium can:</text>
+  <text x="958" y="418" class="s">locally, or GitHub Actions when the API is serverless (triggered</text>
+  <text x="958" y="436" class="s">on approval, plus a 15-minute sweep). Returns interrupted runs to</text>
+  <text x="958" y="454" class="s">the queue and applies the retention period nightly.</text>
+
+  <rect x="940" y="510" width="420" height="140" rx="8" class="box"/>
+  <text x="958" y="538" class="t h">n8n workflows</text>
+  <text x="958" y="562" class="s">Intake relay: sign and forward records from any tool.</text>
+  <text x="958" y="584" class="s">Every 5 minutes: submit approved records, post problems</text>
+  <text x="958" y="602" class="s">to a chat webhook (Slack, Teams, Discord, Google Chat).</text>
+  <text x="958" y="624" class="s">Every morning: counts and what is waiting for a person.</text>
+
+  <!-- arrows -->
+  <path d="M270 260 H 340" class="line"/>
+  <text x="276" y="250" class="lbl">records</text>
+  <path d="M882 232 H 938" class="line"/>
+  <text x="886" y="222" class="lbl">submit</text>
+  <path d="M1150 348 V 314" class="line"/>
+  <path d="M938 412 H 884" class="dash"/>
+  <text x="890" y="402" class="lbl">approved</text>
+  <path d="M938 580 H 884" class="dash"/>
+  <text x="890" y="570" class="lbl">API</text>
+  <path d="M600 708 V 548" class="line"/>
+  <text x="608" y="690" class="lbl">edit, approve, reject</text>
+</svg>

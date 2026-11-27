@@ -1,0 +1,257 @@
+{
+ "summary": {
+  "records": 24,
+  "sent": 13,
+  "blocked_first": 10,
+  "held_for_correction": 1,
+  "submitted": 13,
+  "readback_matched": 13,
+  "recovered_from_failures": "5 of 5",
+  "duplicates_at_portal": 0,
+  "mean_seconds": 3.7,
+  "median_seconds_browser": 4.7,
+  "median_seconds_api": 1.0,
+  "healed_locators": 8
+ },
+ "rows": [
+  {
+   "id": "R01",
+   "form": "riverside-enrollment",
+   "mode": {
+    "normal": "1"
+   },
+   "status": "submitted",
+   "path": "browser",
+   "attempts": 1,
+   "adopted": false,
+   "healed": 0,
+   "readback": "matched",
+   "seconds": 4.2,
+   "copies_at_portal": 1
+  },
+  {
+   "id": "R02",
+   "skipped": "blocked before submission"
+  },
+  {
+   "id": "R03",
+   "form": "riverside-enrollment",
+   "mode": {
+    "chaos": "flaky"
+   },
+   "status": "submitted",
+   "path": "browser",
+   "attempts": 2,
+   "adopted": false,
+   "healed": 0,
+   "readback": "matched",
+   "seconds": 8.9,
+   "copies_at_portal": 1
+  },
+  {
+   "id": "R04",
+   "skipped": "blocked before submission"
+  },
+  {
+   "id": "R05",
+   "form": "riverside-enrollment",
+   "mode": {
+    "variant": "b"
+   },
+   "status": "submitted",
+   "path": "browser",
+   "attempts": 1,
+   "adopted": false,
+   "healed": 2,
+   "readback": "matched",
+   "seconds": 4.2,
+   "copies_at_portal": 1
+  },
+  {
+   "id": "R06",
+   "skipped": "blocked before submission"
+  },
+  {
+   "id": "R07",
+   "form": "riverside-enrollment",
+   "mode": {
+    "chaos": "slow"
+   },
+   "status": "submitted",
+   "path": "browser",
+   "attempts": 1,
+   "adopted": false,
+   "healed": 2,
+   "readback": "matched",
+   "seconds": 6.9,
+   "copies_at_portal": 1
+  },
+  {
+   "id": "R08",
+   "skipped": "blocked before submission"
+  },
+  {
+   "id": "R09",
+   "form": "riverside-enrollment",
+   "mode": {
+    "chaos": "lost"
+   },
+   "status": "submitted",
+   "path": "browser",
+   "attempts": 1,
+   "adopted": true,
+   "healed": 0,
+   "readback": "matched",
+   "seconds": 4.7,
+   "copies_at_portal": 1
+  },
+  {
+   "id": "R10",
+   "form": "riverside-enrollment",
+   "mode": {
+    "variant": "b"
+   },
+   "status": "submitted",
+   "path": "browser",
+   "attempts": 1,
+   "adopted": false,
+   "healed": 2,
+   "readback": "matched",
+   "seconds": 4.1,
+   "copies_at_portal": 1
+  },
+  {
+   "id": "R11",
+   "skipped": "blocked before submission"
+  },
+  {
+   "id": "R12",
+   "form": "riverside-enrollment",
+   "mode": {
+    "chaos": "slow"
+   },
+   "status": "submitted",
+   "path": "browser",
+   "attempts": 1,
+   "adopted": false,
+   "healed": 2,
+   "readback": "matched",
+   "seconds": 6.9,
+   "copies_at_portal": 1
+  },
+  {
+   "id": "H01",
+   "form": "harbour-membership",
+   "mode": {
+    "chaos": "flaky"
+   },
+   "status": "submitted",
+   "path": "api",
+   "attempts": 2,
+   "adopted": false,
+   "healed": 0,
+   "readback": "matched",
+   "seconds": 0.8,
+   "copies_at_portal": 1
+  },
+  {
+   "id": "H02",
+   "form": "harbour-membership",
+   "mode": {
+    "chaos": "lost"
+   },
+   "status": "submitted",
+   "path": "api",
+   "attempts": 1,
+   "adopted": true,
+   "healed": 0,
+   "readback": "matched",
+   "seconds": 1.1,
+   "copies_at_portal": 1
+  },
+  {
+   "id": "H03",
+   "skipped": "blocked before submission"
+  },
+  {
+   "id": "H04",
+   "skipped": "blocked before submission"
+  },
+  {
+   "id": "H05",
+   "form": "harbour-membership",
+   "mode": {
+    "chaos": "slow"
+   },
+   "status": "submitted",
+   "path": "api",
+   "attempts": 1,
+   "adopted": false,
+   "healed": 0,
+   "readback": "matched",
+   "seconds": 3.1,
+   "copies_at_portal": 1
+  },
+  {
+   "id": "H06",
+   "skipped": "needs a person to correct the data first"
+  },
+  {
+   "id": "H07",
+   "skipped": "blocked before submission"
+  },
+  {
+   "id": "H08",
+   "form": "harbour-membership",
+   "mode": {
+    "normal": "1"
+   },
+   "status": "submitted",
+   "path": "api",
+   "attempts": 1,
+   "adopted": false,
+   "healed": 0,
+   "readback": "matched",
+   "seconds": 0.0,
+   "copies_at_portal": 1
+  },
+  {
+   "id": "H09",
+   "skipped": "blocked before submission"
+  },
+  {
+   "id": "H10",
+   "form": "harbour-membership",
+   "mode": {
+    "chaos": "slow"
+   },
+   "status": "submitted",
+   "path": "api",
+   "attempts": 1,
+   "adopted": false,
+   "healed": 0,
+   "readback": "matched",
+   "seconds": 3.0,
+   "copies_at_portal": 1
+  },
+  {
+   "id": "H11",
+   "form": "harbour-membership",
+   "mode": {
+    "chaos": "flaky"
+   },
+   "status": "submitted",
+   "path": "api",
+   "attempts": 2,
+   "adopted": false,
+   "healed": 0,
+   "readback": "matched",
+   "seconds": 0.8,
+   "copies_at_portal": 1
+  },
+  {
+   "id": "H12",
+   "skipped": "blocked before submission"
+  }
+ ]
+}

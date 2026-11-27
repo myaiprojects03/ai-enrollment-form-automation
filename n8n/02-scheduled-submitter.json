@@ -1,0 +1,276 @@
+{
+  "name": "Enrollment submissions: every 5 minutes",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 5
+            }
+          ]
+        }
+      },
+      "id": "dc75bfbc-e63a-4196-b5f7-04d422a006a9",
+      "name": "Every 5 minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "9dc4b08f-7aac-4c0a-9680-bfd2f94394a3",
+      "name": "Run now",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.ENGINE_URL }}/api/enrollments?status=approved&limit=20",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.ENGINE_TOKEN }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          },
+          "timeout": 120000
+        }
+      },
+      "id": "24d640aa-b210-4963-9883-61c79f0bd2a7",
+      "name": "Approved, waiting",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// The list arrives as one response; make one item per enrollment.\nreturn ($input.first().json.body ?? []).map(e => ({ json: { enrollment_id: e.enrollment_id } }));"
+      },
+      "id": "48ad7211-1078-497f-afa5-2cc983169ae6",
+      "name": "One item each",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.ENGINE_URL }}/api/enrollments/{{ $json.enrollment_id }}/submit",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.ENGINE_TOKEN }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          },
+          "timeout": 120000,
+          "batching": {
+            "batch": {
+              "batchSize": 1,
+              "batchInterval": 500
+            }
+          }
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "{\"wait\": true}"
+      },
+      "id": "7dbe458d-051c-494d-bdaf-ff6b530284c6",
+      "name": "Submit",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        660,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// One line per submission, and the ones a person needs to look at. No personal data: IDs, statuses, references.\nconst done = $input.all().map(i => i.json.body ?? {});\nconst problems = done.filter(r => r.status !== 'submitted');\nconst lines = done.map(r => `${r.enrollment_id}: ${r.status}${r.confirmation_ref ? ' ' + r.confirmation_ref : ''}` +\n  `${r.error ? ' (' + r.error.code + ')' : ''}`);\nreturn [{ json: { submitted: done.length - problems.length, needs_attention: problems.length, lines,\n  text: `Enrollment submissions: ${done.length - problems.length} submitted, ${problems.length} need attention.\\n` + lines.join('\\n') } }];"
+      },
+      "id": "3f99ca5c-f4a4-4bdf-ab83-c0e3d9b08c40",
+      "name": "Summarise",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Only post to chat when something needs a person and a chat webhook is set.\nconst s = $input.first().json;\nreturn s.needs_attention > 0 && $env.ALERT_WEBHOOK_URL ? [{ json: { text: s.text } }] : [];"
+      },
+      "id": "9cae8006-d2aa-4ae3-9130-2bd5fbf16426",
+      "name": "Anything for a person?",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.ALERT_WEBHOOK_URL }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          },
+          "timeout": 120000
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ text: $json.text }) }}"
+      },
+      "id": "900c010a-32ae-4f07-b5df-9ce6a821a5b8",
+      "name": "Post to chat",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1320,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Every 5 minutes": {
+      "main": [
+        [
+          {
+            "node": "Approved, waiting",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approved, waiting": {
+      "main": [
+        [
+          {
+            "node": "One item each",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "One item each": {
+      "main": [
+        [
+          {
+            "node": "Submit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Submit": {
+      "main": [
+        [
+          {
+            "node": "Summarise",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarise": {
+      "main": [
+        [
+          {
+            "node": "Anything for a person?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anything for a person?": {
+      "main": [
+        [
+          {
+            "node": "Post to chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run now": {
+      "main": [
+        [
+          {
+            "node": "Approved, waiting",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "timezone": "Europe/London"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "description": "Submits approved enrollments one at a time (the engine retries, reads back and never sends twice), and posts the ones that need a person to a chat webhook."
+  },
+  "tags": []
+}

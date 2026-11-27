@@ -1,0 +1,243 @@
+{
+  "name": "Enrollment desk: morning digest",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "days",
+              "daysInterval": 1,
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "id": "e46dac23-4930-48be-91de-479fc76a5378",
+      "name": "Every morning at 8",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "7fb6bacf-afce-47a1-9e6d-58464f3a70e3",
+      "name": "Run now",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.ENGINE_URL }}/api/enrollments/counts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.ENGINE_TOKEN }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          },
+          "timeout": 120000
+        }
+      },
+      "id": "e48e2ef4-647d-4533-8a2b-97ab2d0b78d6",
+      "name": "Counts",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.ENGINE_URL }}/api/enrollments?status=needs_review&limit=50",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.ENGINE_TOKEN }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          },
+          "timeout": 120000
+        }
+      },
+      "id": "0eba72ac-9341-411b-aa75-d997a110438e",
+      "name": "Waiting for a person",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// The morning summary: counts by status and what is waiting, oldest first. No personal data.\nconst counts = $('Counts').first().json.body ?? {};\nconst waiting = ($('Waiting for a person').first().json.body ?? []).slice().reverse();\nconst label = { needs_review: 'Needs review', blocked: 'Blocked', failed: 'Failed', approved: 'Ready to submit',\n  submitted: 'Submitted', rejected: 'Rejected', submitting: 'Submitting' };\nconst head = Object.entries(counts).map(([k, n]) => `${label[k] ?? k}: ${n}`).join(', ') || 'No enrollments yet';\nconst rows = waiting.slice(0, 15).map(e => {\n  const r = (e.reasons ?? []).find(x => x.severity !== 'info') ?? (e.reasons ?? []).find(x => x.code === 'SIGNOFF_REQUIRED');\n  return `${e.enrollment_id} (${e.target_form}): ${r ? r.message : e.status}`;\n});\nconst text = `Enrollment desk, ${new Date().toLocaleDateString('en-GB')}\\n${head}\\n` +\n  (rows.length ? `\\nWaiting for a person:\\n${rows.join('\\n')}` : '\\nNothing is waiting for a person.') +\n  ($env.CONSOLE_URL ? `\\n\\nOpen the queue: ${$env.CONSOLE_URL}/console` : '');\nreturn [{ json: { text, waiting: waiting.length } }];"
+      },
+      "id": "4a1a999f-8a07-4ee8-920f-b5eb73d7b4db",
+      "name": "Write the digest",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return $env.ALERT_WEBHOOK_URL ? $input.all() : [];"
+      },
+      "id": "5b5b5fce-2658-4d60-9f4f-e8e08921b236",
+      "name": "Chat webhook set?",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.ALERT_WEBHOOK_URL }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          },
+          "timeout": 120000
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ text: $json.text }) }}"
+      },
+      "id": "57adf836-e432-4589-8de4-7b757abba894",
+      "name": "Post the digest",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1100,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Every morning at 8": {
+      "main": [
+        [
+          {
+            "node": "Counts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Counts": {
+      "main": [
+        [
+          {
+            "node": "Waiting for a person",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Waiting for a person": {
+      "main": [
+        [
+          {
+            "node": "Write the digest",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write the digest": {
+      "main": [
+        [
+          {
+            "node": "Chat webhook set?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat webhook set?": {
+      "main": [
+        [
+          {
+            "node": "Post the digest",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run now": {
+      "main": [
+        [
+          {
+            "node": "Counts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "timezone": "Europe/London"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "description": "Every morning: counts by status and the records waiting for a person, posted to a chat webhook (Slack, Teams, Discord, Google Chat)."
+  },
+  "tags": []
+}

@@ -1,0 +1,3 @@
+# The API plus a real browser, for web-form submissions (the worker, and local development).
+-r requirements.txt
+playwright==1.63.0

@@ -1,0 +1,188 @@
+{
+  "name": "Enrollment intake: receive and forward",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "enrollment-intake",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "d829ae19-e451-440f-b5d0-ee62645edcb3",
+      "name": "Receive a record",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "37ecfc9c-fec9-4be3-98b4-68d0707e7034"
+    },
+    {
+      "parameters": {
+        "jsCode": "// One record in, shaped for the engine. Accepts {target_form, record, idempotency_key} or a bare record with\n// ?form=riverside-enrollment on the URL. The exact string signed below is the exact string sent.\nconst req = $input.first().json;\nconst body = req.body ?? {};\nconst record = body.record ?? body;\nconst targetForm = body.target_form ?? req.query?.form;\nif (!targetForm || typeof record !== 'object' || Array.isArray(record) || !Object.keys(record).length) {\n  return [{ json: { invalid: true, payload: '' } }];\n}\nconst key = req.headers?.['idempotency-key'] ?? body.idempotency_key ?? null;\nconst payload = JSON.stringify({ target_form: targetForm, record, idempotency_key: key });\nreturn [{ json: { invalid: false, payload } }];"
+      },
+      "id": "779b8ba5-00c1-41c2-a4c3-3aa35ac928f5",
+      "name": "Shape the record",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "action": "hmac",
+        "type": "SHA256",
+        "value": "={{ $json.payload }}",
+        "dataPropertyName": "signature",
+        "secret": "={{ $env.WEBHOOK_SECRET }}",
+        "encoding": "hex"
+      },
+      "id": "0409fe39-37e7-474e-903e-2399b788e21c",
+      "name": "Sign it",
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 1,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.ENGINE_URL }}/api/webhooks/intake",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Signature",
+              "value": "=sha256={{ $json.signature }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          },
+          "timeout": 120000
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ $json.payload }}"
+      },
+      "id": "24f593a9-5359-4701-b6e7-cf5d82ef80bb",
+      "name": "Send to the engine",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        660,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// What the sender gets back: the engine's answer without personal data (ID, outcome, status, reasons).\nconst res = $input.first().json;\nif ($('Shape the record').first().json.invalid) {\n  return [{ json: { code: 400, body: { error: 'Send {target_form, record} or a record with ?form=...' } } }];\n}\nconst b = res.body ?? {};\nconst ok = res.statusCode === 200 || res.statusCode === 201;\nreturn [{ json: { code: ok ? res.statusCode : 502, body: ok ? {\n  enrollment_id: b.enrollment_id, duplicate: b.duplicate, outcome: b.outcome, status: b.status,\n  reasons: (b.reasons ?? []).filter(r => r.severity !== 'info').map(r => r.message),\n} : { error: 'The enrollment engine did not accept the record', engine_status: res.statusCode } } }];"
+      },
+      "id": "573cab9f-b300-4356-9708-83cbe0bf2221",
+      "name": "Answer for the sender",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "responseCode": "={{ $json.code }}"
+        }
+      },
+      "id": "2fde05f7-445c-44a6-9bc6-28aa2373bbc4",
+      "name": "Reply",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1100,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Receive a record": {
+      "main": [
+        [
+          {
+            "node": "Shape the record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Shape the record": {
+      "main": [
+        [
+          {
+            "node": "Sign it",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sign it": {
+      "main": [
+        [
+          {
+            "node": "Send to the engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send to the engine": {
+      "main": [
+        [
+          {
+            "node": "Answer for the sender",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Answer for the sender": {
+      "main": [
+        [
+          {
+            "node": "Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "timezone": "Europe/London"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "description": "A form tool or CRM posts a record here; it is signed (HMAC-SHA256) and handed to the engine, which maps and validates it."
+  },
+  "tags": []
+}

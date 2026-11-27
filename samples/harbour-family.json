@@ -1,0 +1,18 @@
+{
+  "target_form": "harbour-membership",
+  "source": "api",
+  "idempotency_key": "web-form-77412",
+  "record": {
+    "full_name": "Sofia Marin",
+    "email": "sofia.marin@example.com",
+    "phone": "07800 345678",
+    "date_of_birth": "1991-09-30",
+    "membership_type": "family",
+    "family_members": 4,
+    "start_date": "2026-12-01",
+    "interests": ["swimming", "climbing"],
+    "emergency_contact_name": "Dan Marin",
+    "emergency_contact_phone": "07900 456789",
+    "accept_terms": true
+  }
+}

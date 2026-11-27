@@ -1,0 +1,850 @@
+{
+ "records": [
+  {
+   "id": "R01",
+   "form": "riverside-enrollment",
+   "source": "csv",
+   "record": {
+    "Student Name": "Amara Okafor",
+    "D.O.B": "14/05/1998",
+    "E-mail": "amara.okafor@example.com",
+    "Mobile No": "07911 123456",
+    "Course": "Data Analytics",
+    "Intake": "Jan 2027",
+    "Mode": "Part time",
+    "Address": "14 Mill Lane, Leeds, LS1 4AP",
+    "Terms Accepted": "Yes"
+   },
+   "expected_outcome": "PASS",
+   "expected": {
+    "first_name": "Amara",
+    "last_name": "Okafor",
+    "date_of_birth": "1998-05-14",
+    "email": "amara.okafor@example.com",
+    "phone": "+447911123456",
+    "program": "data-analytics",
+    "start_term": "2027-01",
+    "study_mode": "part_time",
+    "address_line1": "14 Mill Lane",
+    "city": "Leeds",
+    "postcode": "LS1 4AP",
+    "consent_terms": true
+   },
+   "note": "Export headers, full name and one-line address",
+   "needs_ai": false
+  },
+  {
+   "id": "R02",
+   "form": "riverside-enrollment",
+   "source": "csv",
+   "record": {
+    "Student Name": "Leo Grant",
+    "D.O.B": "14/02/2010",
+    "E-mail": "leo.grant@example.com",
+    "Mobile No": "+44 7911 234567",
+    "Course": "Web Development",
+    "Intake": "Sept 2027",
+    "Mode": "FT",
+    "Address": "3 Canal Wharf, Leeds, LS11 5PS",
+    "Guardian": "Hannah Grant",
+    "Relationship": "Mother",
+    "Guardian Mobile": "07400 234567",
+    "Terms Accepted": "Yes"
+   },
+   "expected_outcome": "PASS",
+   "expected": {
+    "first_name": "Leo",
+    "last_name": "Grant",
+    "date_of_birth": "2010-02-14",
+    "email": "leo.grant@example.com",
+    "phone": "+447911234567",
+    "program": "web-development",
+    "start_term": "2027-09",
+    "study_mode": "full_time",
+    "address_line1": "3 Canal Wharf",
+    "city": "Leeds",
+    "postcode": "LS11 5PS",
+    "consent_terms": true,
+    "guardian_name": "Hannah Grant",
+    "guardian_relationship": "parent",
+    "guardian_phone": "+447400234567"
+   },
+   "note": "Under 18 with a guardian",
+   "needs_ai": false
+  },
+  {
+   "id": "R03",
+   "form": "riverside-enrollment",
+   "source": "csv",
+   "record": {
+    "Student Name": "Priya Shah",
+    "D.O.B": "04/03/2001",
+    "E-mail": "PRIYA.SHAH@EXAMPLE.COM",
+    "Mobile No": "07912 345678",
+    "Course": "Accounting",
+    "Intake": "April 2027",
+    "Mode": "Online",
+    "Address": "9 Park Row, Leeds, LS1 5HD",
+    "Terms Accepted": "Yes"
+   },
+   "expected_outcome": "NEEDS_REVIEW",
+   "expected": {
+    "first_name": "Priya",
+    "last_name": "Shah",
+    "date_of_birth": "2001-03-04",
+    "email": "priya.shah@example.com",
+    "phone": "+447912345678",
+    "program": "accounting",
+    "start_term": "2027-04",
+    "study_mode": "online",
+    "address_line1": "9 Park Row",
+    "city": "Leeds",
+    "postcode": "LS1 5HD",
+    "consent_terms": true
+   },
+   "note": "Day and month could be either way round",
+   "needs_ai": false
+  },
+  {
+   "id": "R04",
+   "form": "riverside-enrollment",
+   "source": "csv",
+   "record": {
+    "Student Name": "Tom Hughes",
+    "D.O.B": "22/11/1995",
+    "E-mail": "tom.hughes@example.com",
+    "Mobile No": "07913 456789",
+    "Course": "Project Management",
+    "Intake": "Jan 2027",
+    "Mode": "Part-time",
+    "Address": "88 Kirkstall Road, Leeds, LS3 1LH"
+   },
+   "expected_outcome": "BLOCKED",
+   "expected": {
+    "first_name": "Tom",
+    "last_name": "Hughes",
+    "date_of_birth": "1995-11-22",
+    "email": "tom.hughes@example.com",
+    "phone": "+447913456789",
+    "program": "project-management",
+    "start_term": "2027-01",
+    "study_mode": "part_time",
+    "address_line1": "88 Kirkstall Road",
+    "city": "Leeds",
+    "postcode": "LS3 1LH"
+   },
+   "note": "No consent in the source",
+   "needs_ai": false
+  },
+  {
+   "id": "R05",
+   "form": "riverside-enrollment",
+   "source": "csv",
+   "record": {
+    "Student Name": "Grace O'Neill",
+    "D.O.B": "19/09/1999",
+    "E-mail": "grace.oneill@example.com",
+    "Mobile No": "07914 567890",
+    "Course": "Cyber Secuirty",
+    "Intake": "Sept 2027",
+    "Mode": "Online",
+    "Address": "5 Otley Road, Leeds, LS6 3AA",
+    "Returning?": "Yes",
+    "Student ID": "ra-204518",
+    "Terms Accepted": "Yes"
+   },
+   "expected_outcome": "PASS",
+   "expected": {
+    "first_name": "Grace",
+    "last_name": "O'Neill",
+    "date_of_birth": "1999-09-19",
+    "email": "grace.oneill@example.com",
+    "phone": "+447914567890",
+    "program": "cyber-security",
+    "start_term": "2027-09",
+    "study_mode": "online",
+    "address_line1": "5 Otley Road",
+    "city": "Leeds",
+    "postcode": "LS6 3AA",
+    "consent_terms": true,
+    "prior_enrollment": true,
+    "prior_student_id": "RA-204518"
+   },
+   "note": "Course name typo, returning student",
+   "needs_ai": false
+  },
+  {
+   "id": "R06",
+   "form": "riverside-enrollment",
+   "source": "json",
+   "record": {
+    "applicant": {
+     "first": "Tomasz",
+     "last": "Nowak"
+    },
+    "dob": "1990-11-02",
+    "contact": {
+     "email": "tomasz.nowak@example.com",
+     "mobile": "07915 678901"
+    },
+    "course": "Business Admin",
+    "intake": "2027-04",
+    "mode": "part_time",
+    "address": {
+     "line1": "21 Station Road",
+     "city": "Harrogate",
+     "postcode": "HG1 1SX"
+    },
+    "consent": true
+   },
+   "expected_outcome": "PASS",
+   "expected": {
+    "first_name": "Tomasz",
+    "last_name": "Nowak",
+    "date_of_birth": "1990-11-02",
+    "email": "tomasz.nowak@example.com",
+    "phone": "+447915678901",
+    "program": "business-admin",
+    "start_term": "2027-04",
+    "study_mode": "part_time",
+    "address_line1": "21 Station Road",
+    "city": "Harrogate",
+    "postcode": "HG1 1SX",
+    "consent_terms": true
+   },
+   "note": "Nested JSON from a web form",
+   "needs_ai": false
+  },
+  {
+   "id": "R07",
+   "form": "riverside-enrollment",
+   "source": "json",
+   "record": {
+    "first_name": "Daniel",
+    "last_name": "Reyes",
+    "date_of_birth": "05/14/1998",
+    "email": "daniel.reyes@example.com",
+    "phone": "07916 789012",
+    "program": "Graphic Design",
+    "start_term": "January 2027",
+    "study_mode": "Full-time",
+    "address_line1": "4 Abbey Street",
+    "city": "York",
+    "postcode": "YO1 7HH",
+    "consent_terms": "yes"
+   },
+   "expected_outcome": "NEEDS_REVIEW",
+   "expected": {
+    "first_name": "Daniel",
+    "last_name": "Reyes",
+    "date_of_birth": "1998-05-14",
+    "email": "daniel.reyes@example.com",
+    "phone": "+447916789012",
+    "program": "graphic-design",
+    "start_term": "2027-01",
+    "study_mode": "full_time",
+    "address_line1": "4 Abbey Street",
+    "city": "York",
+    "postcode": "YO1 7HH",
+    "consent_terms": true
+   },
+   "note": "US-style date (month first)",
+   "needs_ai": false
+  },
+  {
+   "id": "R08",
+   "form": "riverside-enrollment",
+   "source": "notes",
+   "record": {
+    "notes": "Call notes, Tuesday afternoon (admissions line)\n\nSpoke to Daniel Mensah about starting the Business Administration course. He'd like to study part time and start in April 2027. Date of birth 2nd March 1994. Best number is 07917 890123 and his email is daniel.mensah@example.com.\n\nAddress: 41 Chapel Street, Bradford, BD1 5DL.\nHe confirmed he has read and agrees to the enrollment terms. No marketing please."
+   },
+   "expected_outcome": "NEEDS_REVIEW",
+   "expected": {
+    "first_name": "Daniel",
+    "last_name": "Mensah",
+    "date_of_birth": "1994-03-02",
+    "email": "daniel.mensah@example.com",
+    "phone": "+447917890123",
+    "program": "business-admin",
+    "start_term": "2027-04",
+    "study_mode": "part_time",
+    "address_line1": "41 Chapel Street",
+    "city": "Bradford",
+    "postcode": "BD1 5DL",
+    "consent_terms": true,
+    "marketing_opt_in": false
+   },
+   "note": "Free-text call notes; consent read from text goes to a person",
+   "needs_ai": true
+  },
+  {
+   "id": "R09",
+   "form": "riverside-enrollment",
+   "source": "notes",
+   "record": {
+    "notes": "First name: Chloe\nLast name: Martin\nDate of birth: 17/12/2003\nEmail: chloe.martin@example.com\nMobile: 07918 901234\nCourse: Computer Science Foundation\nStart term: September 2027\nStudy mode: Full-time\nAddress line 1: 12 Hyde Park Road\nCity: Leeds\nPostcode: LS6 1AH\nTerms: yes"
+   },
+   "expected_outcome": "PASS",
+   "expected": {
+    "first_name": "Chloe",
+    "last_name": "Martin",
+    "date_of_birth": "2003-12-17",
+    "email": "chloe.martin@example.com",
+    "phone": "+447918901234",
+    "program": "cs-foundation",
+    "start_term": "2027-09",
+    "study_mode": "full_time",
+    "address_line1": "12 Hyde Park Road",
+    "city": "Leeds",
+    "postcode": "LS6 1AH",
+    "consent_terms": true
+   },
+   "note": "An emailed form, one field a line",
+   "needs_ai": false
+  },
+  {
+   "id": "R10",
+   "form": "riverside-enrollment",
+   "source": "csv",
+   "record": {
+    "Student Name": "Sam Patel",
+    "D.O.B": "30/06/2002",
+    "E-mail": "sam.patel@example.com",
+    "Phone": "07919 012345",
+    "Mobile": "07920 123456",
+    "Course": "Graphic Design",
+    "Intake": "Jan 2027",
+    "Mode": "Full-time",
+    "Address": "12 Woodhouse Lane, Leeds, LS2 9JT",
+    "Terms Accepted": "Yes"
+   },
+   "expected_outcome": "NEEDS_REVIEW",
+   "expected": {
+    "first_name": "Sam",
+    "last_name": "Patel",
+    "date_of_birth": "2002-06-30",
+    "email": "sam.patel@example.com",
+    "phone": "+447919012345",
+    "program": "graphic-design",
+    "start_term": "2027-01",
+    "study_mode": "full_time",
+    "address_line1": "12 Woodhouse Lane",
+    "city": "Leeds",
+    "postcode": "LS2 9JT",
+    "consent_terms": true
+   },
+   "note": "Two different phone numbers",
+   "needs_ai": false
+  },
+  {
+   "id": "R11",
+   "form": "riverside-enrollment",
+   "source": "csv",
+   "record": {
+    "Student Name": "Mia Clarke",
+    "D.O.B": "21/08/2014",
+    "E-mail": "mia.clarke@example.com",
+    "Mobile No": "07401 345678",
+    "Course": "Web Development",
+    "Intake": "Sept 2027",
+    "Mode": "Online",
+    "Address": "7 Mount Street, Leeds, LS2 3AB",
+    "Guardian": "Ruth Clarke",
+    "Relationship": "Mum",
+    "Guardian Mobile": "07402 456789",
+    "Terms Accepted": "Yes"
+   },
+   "expected_outcome": "BLOCKED",
+   "expected": {
+    "first_name": "Mia",
+    "last_name": "Clarke",
+    "date_of_birth": "2014-08-21",
+    "email": "mia.clarke@example.com",
+    "phone": "+447401345678",
+    "program": "web-development",
+    "start_term": "2027-09",
+    "study_mode": "online",
+    "address_line1": "7 Mount Street",
+    "city": "Leeds",
+    "postcode": "LS2 3AB",
+    "consent_terms": true,
+    "guardian_name": "Ruth Clarke",
+    "guardian_relationship": "parent",
+    "guardian_phone": "+447402456789"
+   },
+   "note": "Too young for the academy (under 14)",
+   "needs_ai": false
+  },
+  {
+   "id": "R12",
+   "form": "riverside-enrollment",
+   "source": "csv",
+   "record": {
+    "Student Name": "JAMES O'BRIEN",
+    "D.O.B": "22/11/95",
+    "E-mail": "james.obrien@example.com",
+    "Mobile No": "07907 123456",
+    "Course": "PRINCE2",
+    "Intake": "Jan 2027",
+    "Mode": "Part time",
+    "Address": "30 Briggate, Leeds, LS1 6HD",
+    "Terms Accepted": "Y"
+   },
+   "expected_outcome": "NEEDS_REVIEW",
+   "expected": {
+    "first_name": "James",
+    "last_name": "O'Brien",
+    "date_of_birth": "1995-11-22",
+    "email": "james.obrien@example.com",
+    "phone": "+447907123456",
+    "program": "project-management",
+    "start_term": "2027-01",
+    "study_mode": "part_time",
+    "address_line1": "30 Briggate",
+    "city": "Leeds",
+    "postcode": "LS1 6HD",
+    "consent_terms": true
+   },
+   "note": "Capitals and a two-digit year",
+   "needs_ai": false
+  },
+  {
+   "id": "H01",
+   "form": "harbour-membership",
+   "source": "json",
+   "record": {
+    "full_name": "Sofia Marin",
+    "email": "sofia.marin@example.com",
+    "phone": "07800 345678",
+    "date_of_birth": "1991-09-30",
+    "membership_type": "adult",
+    "start_date": "+14d",
+    "interests": [
+     "swimming",
+     "yoga"
+    ],
+    "emergency_contact_name": "Dan Marin",
+    "emergency_contact_phone": "07900 456789",
+    "accept_terms": true
+   },
+   "expected_outcome": "PASS",
+   "expected": {
+    "full_name": "Sofia Marin",
+    "email": "sofia.marin@example.com",
+    "phone": "+447800345678",
+    "date_of_birth": "1991-09-30",
+    "membership_type": "adult",
+    "start_date": "+14d",
+    "interests": [
+     "swimming",
+     "yoga"
+    ],
+    "emergency_contact_name": "Dan Marin",
+    "emergency_contact_phone": "+447900456789",
+    "accept_terms": true
+   },
+   "note": "Clean API record (still needs sign-off)",
+   "needs_ai": false
+  },
+  {
+   "id": "H02",
+   "form": "harbour-membership",
+   "source": "json",
+   "record": {
+    "member": {
+     "first": "Kwame",
+     "last": "Asante"
+    },
+    "contact": {
+     "email": "kwame.asante@example.com",
+     "phone": "07801 456789"
+    },
+    "dob": "1985-03-12",
+    "plan": "Family",
+    "household size": "four",
+    "start": "+21d",
+    "activities": "Swimming, Climbing",
+    "ice": {
+     "name": "Efua Asante",
+     "phone": "07901 567890"
+    },
+    "terms": true
+   },
+   "expected_outcome": "PASS",
+   "expected": {
+    "full_name": "Kwame Asante",
+    "email": "kwame.asante@example.com",
+    "phone": "+447801456789",
+    "date_of_birth": "1985-03-12",
+    "membership_type": "family",
+    "start_date": "+21d",
+    "interests": [
+     "swimming",
+     "climbing"
+    ],
+    "emergency_contact_name": "Efua Asante",
+    "emergency_contact_phone": "+447901567890",
+    "accept_terms": true,
+    "family_members": 4
+   },
+   "note": "Nested, family size in words",
+   "needs_ai": false
+  },
+  {
+   "id": "H03",
+   "form": "harbour-membership",
+   "source": "json",
+   "record": {
+    "member": {
+     "first": "Jonah",
+     "last": "Reid"
+    },
+    "contact": {
+     "email": "jonah.reid@example.com",
+     "phone": "07802 567890"
+    },
+    "dob": "2006-04-18",
+    "plan": "Student",
+    "Uni ref #": "UOL482913",
+    "start": "+7d",
+    "activities": [
+     "gym",
+     "squash"
+    ],
+    "ice": {
+     "name": "Ruth Reid",
+     "phone": "07903 789012"
+    },
+    "terms": true
+   },
+   "expected_outcome": "PASS",
+   "expected": {
+    "full_name": "Jonah Reid",
+    "email": "jonah.reid@example.com",
+    "phone": "+447802567890",
+    "date_of_birth": "2006-04-18",
+    "membership_type": "student",
+    "start_date": "+7d",
+    "interests": [
+     "gym",
+     "squash"
+    ],
+    "emergency_contact_name": "Ruth Reid",
+    "emergency_contact_phone": "+447903789012",
+    "accept_terms": true,
+    "student_id": "UOL482913"
+   },
+   "note": "Student card under an odd column name",
+   "needs_ai": true
+  },
+  {
+   "id": "H04",
+   "form": "harbour-membership",
+   "source": "json",
+   "record": {
+    "member": {
+     "first": "Kai",
+     "last": "Turner"
+    },
+    "contact": {
+     "email": "kai.turner@example.com",
+     "phone": "07803 678901"
+    },
+    "dob": "2012-07-07",
+    "plan": "Adult",
+    "start": "+7d",
+    "activities": "Tennis",
+    "ice": {
+     "name": "Lisa Turner",
+     "phone": "07804 789012"
+    },
+    "terms": false
+   },
+   "expected_outcome": "BLOCKED",
+   "expected": {
+    "full_name": "Kai Turner",
+    "email": "kai.turner@example.com",
+    "phone": "+447803678901",
+    "date_of_birth": "2012-07-07",
+    "membership_type": "adult",
+    "start_date": "+7d",
+    "interests": [
+     "tennis"
+    ],
+    "emergency_contact_name": "Lisa Turner",
+    "emergency_contact_phone": "+447804789012",
+    "accept_terms": false
+   },
+   "note": "Under 16, terms refused",
+   "needs_ai": false
+  },
+  {
+   "id": "H05",
+   "form": "harbour-membership",
+   "source": "csv",
+   "record": {
+    "Name": "Ella Brooks",
+    "Email": "ella.brooks@example.com",
+    "Mobile": "07904 890123",
+    "DOB": "21/01/1984",
+    "Plan": "Off peak",
+    "Start": "+10d",
+    "Activities": "Swimming; yoga & bouldering",
+    "ICE name": "Mark Brooks",
+    "ICE phone": "07805 890123",
+    "Terms": "agreed"
+   },
+   "expected_outcome": "PASS",
+   "expected": {
+    "full_name": "Ella Brooks",
+    "email": "ella.brooks@example.com",
+    "phone": "+447904890123",
+    "date_of_birth": "1984-01-21",
+    "membership_type": "off_peak",
+    "start_date": "+10d",
+    "interests": [
+     "swimming",
+     "yoga",
+     "climbing"
+    ],
+    "emergency_contact_name": "Mark Brooks",
+    "emergency_contact_phone": "+447805890123",
+    "accept_terms": true
+   },
+   "note": "Spreadsheet, interests as free text",
+   "needs_ai": false
+  },
+  {
+   "id": "H06",
+   "form": "harbour-membership",
+   "source": "csv",
+   "record": {
+    "Name": "Omar Haddad",
+    "Email": "omar.haddad@example.com",
+    "Mobile": "07905 901234",
+    "DOB": "28/02/1990",
+    "Plan": "Adult",
+    "Start": "+10d",
+    "Activities": "Gym",
+    "ICE name": "Layla Haddad",
+    "ICE phone": "07905 901234",
+    "Terms": "yes"
+   },
+   "expected_outcome": "NEEDS_REVIEW",
+   "expected": {
+    "full_name": "Omar Haddad",
+    "email": "omar.haddad@example.com",
+    "phone": "+447905901234",
+    "date_of_birth": "1990-02-28",
+    "membership_type": "adult",
+    "start_date": "+10d",
+    "interests": [
+     "gym"
+    ],
+    "emergency_contact_name": "Layla Haddad",
+    "emergency_contact_phone": "+447905901234",
+    "accept_terms": true
+   },
+   "note": "Emergency number is the member's own",
+   "needs_ai": false
+  },
+  {
+   "id": "H07",
+   "form": "harbour-membership",
+   "source": "csv",
+   "record": {
+    "Name": "Lucy Evans",
+    "Email": "lucy.evans@example.com",
+    "Mobile": "07806 901234",
+    "DOB": "15/06/1996",
+    "Plan": "Adult",
+    "Start": "+200d",
+    "Activities": "Tennis",
+    "ICE name": "Ben Evans",
+    "ICE phone": "07906 012345",
+    "Terms": "yes"
+   },
+   "expected_outcome": "BLOCKED",
+   "expected": {
+    "full_name": "Lucy Evans",
+    "email": "lucy.evans@example.com",
+    "phone": "+447806901234",
+    "date_of_birth": "1996-06-15",
+    "membership_type": "adult",
+    "start_date": "+200d",
+    "interests": [
+     "tennis"
+    ],
+    "emergency_contact_name": "Ben Evans",
+    "emergency_contact_phone": "+447906012345",
+    "accept_terms": true
+   },
+   "note": "Start date too far ahead",
+   "needs_ai": false
+  },
+  {
+   "id": "H08",
+   "form": "harbour-membership",
+   "source": "csv",
+   "record": {
+    "First name": "Aisha",
+    "Surname": "Khan",
+    "Email": "aisha.khan@example.com",
+    "Mobile": "07807 012345",
+    "DOB": "23/10/1993",
+    "Plan": "Adult",
+    "Start": "+5d",
+    "Activities": "Yoga, Gym",
+    "ICE name": "Imran Khan",
+    "ICE phone": "07908 234567",
+    "Terms": "yes",
+    "How did you hear?": "Google"
+   },
+   "expected_outcome": "PASS",
+   "expected": {
+    "full_name": "Aisha Khan",
+    "email": "aisha.khan@example.com",
+    "phone": "+447807012345",
+    "date_of_birth": "1993-10-23",
+    "membership_type": "adult",
+    "start_date": "+5d",
+    "interests": [
+     "yoga",
+     "gym"
+    ],
+    "emergency_contact_name": "Imran Khan",
+    "emergency_contact_phone": "+447908234567",
+    "accept_terms": true,
+    "how_heard": "search"
+   },
+   "note": "First and last in separate columns",
+   "needs_ai": false
+  },
+  {
+   "id": "H09",
+   "form": "harbour-membership",
+   "source": "notes",
+   "record": {
+    "notes": "Walk-in at reception. Hannah Wright, born 9 August 1988, wants an adult membership starting {{+12d}}. Mobile 07808 123456, email hannah.wright@example.com. Interested in swimming and tennis. Emergency contact is her partner Joe Wright on 07401 345678. She read the membership terms and agreed."
+   },
+   "expected_outcome": "NEEDS_REVIEW",
+   "expected": {
+    "full_name": "Hannah Wright",
+    "email": "hannah.wright@example.com",
+    "phone": "+447808123456",
+    "date_of_birth": "1988-08-09",
+    "membership_type": "adult",
+    "start_date": "+12d",
+    "interests": [
+     "swimming",
+     "tennis"
+    ],
+    "emergency_contact_name": "Joe Wright",
+    "emergency_contact_phone": "+447401345678",
+    "accept_terms": true
+   },
+   "note": "Reception notes; consent goes to a person",
+   "needs_ai": true
+  },
+  {
+   "id": "H10",
+   "form": "harbour-membership",
+   "source": "json",
+   "record": {
+    "full_name": "Noah Fischer",
+    "email": "noah.fischer at example dot com",
+    "phone": "07912 345678",
+    "date_of_birth": "1979-12-24",
+    "membership_type": "Adult",
+    "start_date": "+8d",
+    "interests": "squash",
+    "emergency_contact_name": "Mila Fischer",
+    "emergency_contact_phone": "07913 456789",
+    "how_heard": "Instagram",
+    "accept_terms": "yes"
+   },
+   "expected_outcome": "NEEDS_REVIEW",
+   "expected": {
+    "full_name": "Noah Fischer",
+    "email": "noah.fischer@example.com",
+    "phone": "+447912345678",
+    "date_of_birth": "1979-12-24",
+    "membership_type": "adult",
+    "start_date": "+8d",
+    "interests": [
+     "squash"
+    ],
+    "emergency_contact_name": "Mila Fischer",
+    "emergency_contact_phone": "+447913456789",
+    "accept_terms": true,
+    "how_heard": "social"
+   },
+   "note": "Email written out in words",
+   "needs_ai": false
+  },
+  {
+   "id": "H11",
+   "form": "harbour-membership",
+   "source": "json",
+   "record": {
+    "full_name": "Zara Ali",
+    "email": "zara.ali@example.com",
+    "phone": "07914 567890",
+    "date_of_birth": "2001-05-05",
+    "membership_type": "Adult",
+    "start_date": "+9d",
+    "interests": "Swimming, darts",
+    "emergency_contact_name": "Sami Ali",
+    "emergency_contact_phone": "07915 678901",
+    "accept_terms": true
+   },
+   "expected_outcome": "NEEDS_REVIEW",
+   "expected": {
+    "full_name": "Zara Ali",
+    "email": "zara.ali@example.com",
+    "phone": "+447914567890",
+    "date_of_birth": "2001-05-05",
+    "membership_type": "adult",
+    "start_date": "+9d",
+    "interests": [
+     "swimming"
+    ],
+    "emergency_contact_name": "Sami Ali",
+    "emergency_contact_phone": "+447915678901",
+    "accept_terms": true
+   },
+   "note": "An interest the club does not offer",
+   "needs_ai": false
+  },
+  {
+   "id": "H12",
+   "form": "harbour-membership",
+   "source": "csv",
+   "record": {
+    "Name": "Ben Carter",
+    "Email": "ben.carter@example.com",
+    "Mobile": "07916 789012",
+    "DOB": "11/11/1992",
+    "Plan": "Adult",
+    "Start": "+6d",
+    "Activities": "Gym",
+    "Terms": "yes"
+   },
+   "expected_outcome": "BLOCKED",
+   "expected": {
+    "full_name": "Ben Carter",
+    "email": "ben.carter@example.com",
+    "phone": "+447916789012",
+    "date_of_birth": "1992-11-11",
+    "membership_type": "adult",
+    "start_date": "+6d",
+    "interests": [
+     "gym"
+    ],
+    "accept_terms": true
+   },
+   "note": "No emergency contact",
+   "needs_ai": false
+  }
+ ]
+}

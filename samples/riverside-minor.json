@@ -1,0 +1,21 @@
+{
+  "target_form": "riverside-enrollment",
+  "source": "json",
+  "record": {
+    "first_name": "Leo",
+    "last_name": "Grant",
+    "date_of_birth": "2010-02-03",
+    "email": "leo.grant@example.com",
+    "phone": "+44 7911 234567",
+    "guardian_name": "Hannah Grant",
+    "guardian_relationship": "parent",
+    "guardian_phone": "07400 234567",
+    "program": "web-development",
+    "start_term": "2027-09",
+    "study_mode": "full_time",
+    "address_line1": "3 Canal Wharf",
+    "city": "Leeds",
+    "postcode": "LS11 5PS",
+    "consent_terms": true
+  }
+}
